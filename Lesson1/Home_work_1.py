@@ -1,7 +1,8 @@
 class Fraction:
 
-    def __init__(self, fraction):
+    def __init__(self, fraction, fraction2):
         self.fraction = fraction
+        self.fraction2 = fraction2
 
     def dont_znam(self, m, f1):
         m1 = m
@@ -27,66 +28,59 @@ class Fraction:
         else:
             return None
 
-    def prosto(self, f, fraction1):
+    def prosto(self, f, f2, fraction1, fraction2):
         ret = None
         ret1 = None
-        if f[0] == fraction1[1]:
-            f[0], fraction1[1] = 1, 1
+        if f == fraction2:
+            f, fraction2 = 1, 1
         else:
-            ret1 = self.dont_num(f[0], fraction1[1])
-        if f[1] == fraction1[0]:
-            f[1], fraction1[0] = 1, 1
+            ret1 = self.dont_num(f, fraction2)
+        if f2 == fraction1:
+            f2, fraction1 = 1, 1
         else:
-            ret = self.dont_num(f[1], fraction1[0])
+            ret = self.dont_num(f2, fraction1)
         if ret is None:
             pass
         else:
-            fraction1[0] //= ret
-            f[1] //= ret
+            fraction1 //= ret
+            f2 //= ret
         if ret1 is None:
             pass
         else:
-            f[0] //= ret1
-            fraction1[1] //= ret1
-        result = f[0] * fraction1[0], f[1] * fraction1[1]
+            f //= ret1
+            fraction2 //= ret1
+        result = f * fraction1, f2 * fraction2
         return result
 
-    def add(self, f):
-        if self.fraction[1] == f[1]:
-            num = self.fraction[0] + f[0]
-            return num, f[1]
+    def add(self, f, f2):
+        if self.fraction2 == f2:
+            num = self.fraction + f
+            return num, f2
         else:
-            m = self.fraction[1]
-            res = self.dont_znam(m, f[1])
+            res = self.dont_znam(self.fraction2, f2)
 
-            result_first = self.fraction[0] * res[0] + f[0] * res[1]
+            result_first = self.fraction * res[0] + f * res[1]
             return result_first, res[2]
 
-    def subtract(self, f):
-        if self.fraction[1] == f[1]:
-            num = self.fraction[0] - f[0]
-            return num, f[1]
+    def subtract(self, f, f2):
+        if self.fraction2 == f2:
+            num = self.fraction - f
+            return num, f2
         else:
-            m = self.fraction[1]
-            res = self.dont_znam(m, f[1])
-            result_first = self.fraction[0] * res[0] - f[0] * res[1]
+            res = self.dont_znam(self.fraction2, f2)
+            result_first = self.fraction * res[0] - f * res[1]
             return result_first, res[2]
 
-    def delete(self, f):
-        fraction1 = list(self.fraction)
-        f = list(f)
-        f[0], f[1] = f[1], f[0]
-        return self.prosto(f, fraction1)
+    def delete(self, f, f2):
+        f, f2 = f2, f
+        return self.prosto(f, f2, self.fraction, self.fraction2)
 
-    def multiply(self, f):
-        fraction1 = list(self.fraction)
-        f = list(f)
-        return self.prosto(f, fraction1)
+    def multiply(self, f, f2):
+        return self.prosto(f, f2, self.fraction, self.fraction2)
 
 
-a = Fraction((2, 6))
-
-print(a.add((2, 7)))
-print(a.subtract((2, 8)))
-print(a.delete((4, 9)))
-print(a.multiply((5, 10)))
+a = Fraction(2, 6)
+print(a.add(2, 7))
+print(a.subtract(2, 8))
+print(a.delete(4, 9))
+print(a.multiply(5, 10))
