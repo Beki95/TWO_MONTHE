@@ -4,31 +4,35 @@ class Complex:
         self.x1 = x1
         self.y1 = y1
 
-    def add(self, x2, y2, oper2="+", i="i"):
-        result = f"{self.x1 + x2} {oper2} {self.y1 + y2}{i}"
+    def __add__(self, other, i="i", oper="+"):
+        result = f"{self.x1 + other.x1} {oper} {self.y1 + other.y1}{i}"
+        if other.y1 < 0:
+            result = f"{self.x1 + other.x1} {self.y1 + other.y1}{i}"
         return result
 
-    def subtract(self, x2, y2, oper="+", i="i"):
-        result = f"{self.x1 - x2} {self.y1 - y2}{i}"
-        if y2 < 0:
-            result = f"{self.x1 - x2} {oper} {self.y1 - y2}{i}"
+    def __sub__(self, other, oper="+", i="i"):
+        result = f"{self.x1 - other.x1} {self.y1 - other.y1}{i}"
+        if other.y1 < 0:
+            result = f"{self.x1 - other.x1} {oper} {self.y1 - other.y1}{i}"
         return result
 
-    def multiply(self, x2, y2, oper="+", i="i"):
-        bracket1 = self.x1 * x2 - self.y1 * y2
-        bracket2 = self.x1 * y2 + self.y1 * x2
+    def __mul__(self, other, oper="+", i="i"):
+        bracket1 = self.x1 * other.x1 - self.y1 * other.y1
+        bracket2 = self.x1 * other.y1 + self.y1 * other.x1
         result = f"{bracket1} {oper} {bracket2}{i}"
         return result
 
-    def delete(self, x2, y2, i="i"):
-        bracket1 = self.x1 * x2 + self.y1 * y2
-        bracket2 = self.y1 * x2 - self.x1 * y2
-        result = f"""{bracket1}/{x2**2 + y2**2} + {bracket2}{i}/{x2**2 + y2**2}"""
+    def __floordiv__(self, other, i="i"):
+        bracket1 = self.x1 * other.x1 + self.y1 * other.y1
+        bracket2 = self.y1 * other.x1 - self.x1 * other.y1
+        denominator = other.x1 ** 2 + other.y1 ** 2
+        result = f"""{bracket1}/{denominator} + {bracket2}{i}/{denominator}"""
         return result
 
 
-a = Complex(2, 3)
-print(a.add(5, 7))
-print(a.subtract(5, -2))
-print(a.multiply(5, -2))
-print(a.delete(5, 2))
+a = Complex(2, -3)
+b = Complex(5, 7)
+print(a + b)
+print(a - b)
+print(a * b)
+print(a // b)
