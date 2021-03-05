@@ -35,6 +35,7 @@ class Article:
             self.articles_link.append(x)
         # print(len(self.articles_link))
         # print(len(self.articles_info))
+        print(self.articles_link)
         return self.articles_info, self.articles_link
 
 
@@ -45,17 +46,20 @@ async def fetch(url):
             return html
 
 
-async def main(urls):
+async def main(url):
     t = []
-    for url in urls:
-        html = await fetch(url)
-        soup = BS(html, "lxml")
-        text = soup.select_one("h1.newsTitle")
-        t.append(text)
+    html = await fetch(url)
+    soup = BS(html, "lxml")
+    text = soup.select_one("h1.newsTitle")
+    t.append(text)
     return t
+
+
+async def run(urls):
+    return await asyncio.gather(*[main(url) for url in urls])
 
 
 a = Article()
 urls = a.get_page()[1][:20]
 loop = asyncio.get_event_loop()
-print(loop.run_until_complete(main(urls)))
+print(loop.run_until_complete(run(urls)))
