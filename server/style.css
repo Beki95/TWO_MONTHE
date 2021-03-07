@@ -1,0 +1,24 @@
+.hello {
+    text-align: center;
+}
+
+.tan img {
+    border-radius: 70%;
+    display: block;
+    margin: auto;
+    animation: 5s spin linear infinite;
+}
+
+@keyframes spin {
+    10% {
+        transform: rotate(720deg);
+    }
+    20% {
+        transform: rotate(720deg);
+    }
+}
+
+.zero img {
+    display: block;
+    margin: -38% 950px;
+}
